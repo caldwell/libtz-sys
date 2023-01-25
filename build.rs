@@ -21,7 +21,10 @@ fn main() {
                                   ].join(" ")))
         .current_dir(std::path::Path::new("tz"));
     println!("command: {:?}", make);
-    make.status().expect("Make failed");
+    match make.status().expect("Make failed").code().expect("Make crashed?") {
+        0 => {},
+        e => { panic!("Make exited with {}", e); },
+    }
     std::fs::copy("tz/libtz.a", out_dir.join("libtz.a")).expect(&format!("Couldn't copy libtz.a to {}", out_dir.display()));
 
     println!("cargo:rustc-link-lib=tz");
