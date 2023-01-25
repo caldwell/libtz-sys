@@ -4,7 +4,7 @@ version = "0.0.0"
 edition = "2021"
 description = "An FFI interface to IANA's timezone library, libtz [WIP, don't use yet]"
 repository = "https://github.com/caldwell/libtz-sys.git"
-license = "MIT"
+license-file = "LICENSE.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
