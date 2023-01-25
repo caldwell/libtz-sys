@@ -5,7 +5,15 @@ edition = "2021"
 description = "An FFI interface to IANA's timezone library, libtz [WIP, don't use yet]"
 repository = "https://github.com/caldwell/libtz-sys.git"
 license-file = "LICENSE.md"
+links = "tz"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+path = "localtime.rs"
+
+[build-dependencies]
+make-cmd = "0.1.0"
+
+[dev-dependencies]
+version-sync = "0.9"
 
 [dependencies]
