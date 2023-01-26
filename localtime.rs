@@ -66,7 +66,7 @@ pub struct Tm {
 pub type TimezoneT = *const c_void;
 
 extern "C" {
-    /// Convert system time to UTC.
+    /// Convert system time to a UTC [`Tm`].
     ///
     /// Rust interface for the C function:
     /// ```C
@@ -80,7 +80,7 @@ extern "C" {
     #[link_name = "tz_gmtime_r"]
     pub fn gmtime_r(timep: *const TimeT, tmp: *mut Tm) -> *mut Tm;
 
-    /// Convert system time to local time using globally configured time zone.
+    /// Convert system time to a local time [`Tm`] using globally configured time zone.
     ///
     /// Rust interface for the C function:
     /// ```C
@@ -95,7 +95,7 @@ extern "C" {
     #[link_name = "tz_localtime_r"]
     pub fn localtime_r(timep: *const TimeT, tmp: *mut Tm) -> *mut Tm;
 
-    /// Convert UTC `Tm` to system time.
+    /// Convert UTC [`Tm`] to system time.
     ///
     /// Rust interface for the C function:
     /// ```C
@@ -107,7 +107,7 @@ extern "C" {
     #[link_name = "tz_timegm"]
     pub fn timegm(tmp: *const Tm) -> TimeT;
 
-    /// Convert local time `Tm` to system time using globally configured time zone.
+    /// Convert local time [`Tm`] to system time using globally configured time zone.
     ///
     /// Rust interface for the C function:
     /// ```C
