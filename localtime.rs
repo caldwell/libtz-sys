@@ -1,3 +1,8 @@
+// Thin Rust FFI layer around libtz
+//
+// Copyright © 2023 David Caldwell <david@porkrind.org>
+// License: MIT (see LICENSE.md file)
+
 #![doc = include_str!("README.md")]
 
 use std::cell::RefCell;
