@@ -233,25 +233,25 @@ mod tests {
     use super::*;
     #[test]
     fn basic() {
-        let time: super::TimeT = 127810800;
+        let time: TimeT = 127810800;
         std::env::set_var("TZ", "America/Los_Angeles");
-        unsafe { super::tzset() };
-        let mut tm = MaybeUninit::<super::Tm>::uninit();
+        unsafe { tzset() };
+        let mut tm = MaybeUninit::<Tm>::uninit();
         let tmp = tm.as_mut_ptr();
-        let ret = unsafe { super::localtime_r(&time, tmp) };
+        let ret = unsafe { localtime_r(&time, tmp) };
         assert_ne!(ret, std::ptr::null_mut());
         assert_eq!(ret, tmp);
         let tm = unsafe { tm.assume_init() };
         let zone: &str = unsafe { CStr::from_ptr(tm.tm_zone).to_str().expect("correct utf8") };
         assert_eq!((tm.tm_sec, tm.tm_min, tm.tm_hour, tm.tm_mday, tm.tm_mon, tm.tm_year, tm.tm_wday, tm.tm_yday, tm.tm_isdst, tm.tm_gmtoff, zone),
                    (0,         0,         0,          19,         0,         74,         6,          18,         1,           -25200,       "PDT"));
-        assert_eq!(unsafe { super::mktime(&tm) }, time); // Round trip
+        assert_eq!(unsafe { mktime(&tm) }, time); // Round trip
         let time: TimeT = time + tm.tm_gmtoff;
-        assert_eq!(unsafe { super::timegm(&tm) }, time);
+        assert_eq!(unsafe { timegm(&tm) }, time);
 
-        let mut tm = MaybeUninit::<super::Tm>::uninit();
+        let mut tm = MaybeUninit::<Tm>::uninit();
         let tmp = tm.as_mut_ptr();
-        let ret = unsafe { super::gmtime_r(&time, tmp) };
+        let ret = unsafe { gmtime_r(&time, tmp) };
         assert_ne!(ret, std::ptr::null_mut());
         assert_eq!(ret, tmp);
         let tm = unsafe { tm.assume_init() };
@@ -263,18 +263,18 @@ mod tests {
     #[test]
     fn localtime_rz_test() {
         let tzname = CString::new("America/New_York").unwrap();
-        let tz = unsafe { super::tzalloc(tzname.as_ptr()) };
+        let tz = unsafe { tzalloc(tzname.as_ptr()) };
         assert_ne!(tz, std::ptr::null_mut());
-        let time: super::TimeT = 127810800;
-        let mut tm = MaybeUninit::<super::Tm>::uninit();
-        let ret = unsafe { super::localtime_rz(tz, &time, tm.as_mut_ptr()) };
+        let time: TimeT = 127810800;
+        let mut tm = MaybeUninit::<Tm>::uninit();
+        let ret = unsafe { localtime_rz(tz, &time, tm.as_mut_ptr()) };
         assert_ne!(ret, std::ptr::null_mut());
         let tm = unsafe { tm.assume_init() };
         let zone: &str = unsafe { CStr::from_ptr(tm.tm_zone).to_str().expect("correct utf8") };
         assert_eq!((tm.tm_sec, tm.tm_min, tm.tm_hour, tm.tm_mday, tm.tm_mon, tm.tm_year, tm.tm_wday, tm.tm_yday, tm.tm_isdst, tm.tm_gmtoff, zone),
                    (0,         0,         3,          19,         0,         74,         6,          18,         1,           -14400,       "EDT"));
-        assert_eq!(unsafe { super::mktime_z(tz, &tm) }, time); // Round trip
-        unsafe { super::tzfree(tz) };
+        assert_eq!(unsafe { mktime_z(tz, &tm) }, time); // Round trip
+        unsafe { tzfree(tz) };
     }
 
     #[test]
@@ -292,7 +292,7 @@ mod tests {
         assert_eq!((tm.tm_sec, tm.tm_min, tm.tm_hour, tm.tm_mday, tm.tm_mon, tm.tm_year, tm.tm_wday, tm.tm_yday, tm.tm_isdst, tm.tm_gmtoff, zone),
                    (59,        59,        23,         31,         11,        86,         3,          364,        0,           0,            "UTC"));
         assert_eq!(unsafe { time2posix_z(tz, time) }, posixtime); // Round Trip
-        unsafe { super::tzfree(tz) };
+        unsafe { tzfree(tz) };
     }
 
     #[test]
