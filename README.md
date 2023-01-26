@@ -1,7 +1,11 @@
 libtz-sys
 =========
 
-Rust FFI interface for IANA's [libtz](https://www.iana.org/time-zones).
+Rust FFI interface for IANA's [libtz](https://www.iana.org/time-zones)
+([git repository](https://github.com/eggert/tz)).
+
+This is a low level library---You will _most likely_ prefer [libtz, a more
+idomatic Rust interface built on top of this](https://github.com/caldwell/libtz).
 
 This provides an equivalent of glibc's `localtime_r()` function (and related
 functions). The difference is that this library has been compiled such that the
