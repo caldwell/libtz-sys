@@ -25,10 +25,9 @@ fn rust_getenv_internal(name: *const c_char) -> Option<*const c_char> {
 
 /// System time. On unix, the number of seconds since 00:00:00 UTC on 1 January 1970.
 ///
-/// FIXME: This is libtz's `time_t`, which currently mirrors the system's `time_t`. This makes hardcoding it
-/// as i64 incorrect! Should we try to mirror the system `time_t`? Or should we force libtz to compile with a
-/// 64 bit `time_t` (which appears to be possible)?
-pub type TimeT = i64; // FIXME: This isn't in Rust yet.
+/// Note: This is libtz's `time_t`, which currently hardcoded to i64 regardless
+/// of the system's `time_t`.
+pub type TimeT = i64; // See `-Dtime_tz` in build.rs
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
 pub struct Tm {
@@ -66,6 +65,7 @@ extern "C" {
     /// structures, described below. The storage for the returned [`Tm`] should be passed in as the 2nd
     /// argument. If it encounters an error, it will return a `NULL` and set `errno` (see
     /// [`std::io::Error::last_os_error`]).
+    #[link_name = "tz_gmtime_r"]
     pub fn gmtime_r(timep: *const TimeT, tmp: *mut Tm) -> *mut Tm;
 
     /// Convert system time to local time using globally configured time zone.
@@ -79,6 +79,7 @@ extern "C" {
     /// Saving Time in the United States).  The storage for the returned [`Tm`] should be passed in as the 2nd
     /// argument. If it encounters an error, it will return a `NULL` and set `errno` (see
     /// [`std::io::Error::last_os_error`]).
+    #[link_name = "tz_localtime_r"]
     pub fn localtime_r(timep: *const TimeT, tmp: *mut Tm) -> *mut Tm;
 
     /// Convert UTC `Tm` to system time.
@@ -94,6 +95,7 @@ extern "C" {
     /// ```text
     /// bad_rust_code();
     /// ```
+    #[link_name = "tz_timegm"]
     pub fn timegm(tmp: *const Tm) -> TimeT;
 
     /// Convert local time `Tm` to system time using globally configured time zone.
@@ -118,6 +120,7 @@ extern "C" {
     /// their normal ranges; the final value of `tm_mday` is not set until `tm_mon` and `tm_year` are
     /// determined.  The `mktime` function returns the specified calendar time; If the calendar time cannot be
     /// represented, it returns -1.
+    #[link_name = "tz_mktime"]
     pub fn mktime(tmp: *const Tm) -> TimeT;
 
     /// Re-read `TZ` environment variable and configure global time zone.
@@ -131,6 +134,7 @@ extern "C" {
     /// into internal storage that is accessed by `localtime_r`, and `mktime`.  The anonymous shared timezone
     /// object is freed by the next call to `tzset`.  If the implied call to `tzalloc` fails, `tzset` falls
     /// back on Universal Time (UT).
+    #[link_name = "tz_tzset"]
     pub fn tzset();
 
     // -DNETBSD_INSPIRED
@@ -146,6 +150,7 @@ extern "C" {
     /// cannot be allocated, `tzalloc` returns a null pointer and sets `errno`.
     ///
     #[doc = include_str!("tzalloc.md")]
+    #[link_name = "tz_tzalloc"]
     pub fn tzalloc(zone: *const c_char) -> TimezoneT;
 
     /// Free allocated time zone.
@@ -157,6 +162,7 @@ extern "C" {
     ///
     /// The `tzfree` function frees a timezone object `tz`, which should have been successfully allocated by
     /// `tzalloc`.  This invalidates any `tm_zone` pointers that `tz` was used to set.
+    #[link_name = "tz_tzfree"]
     pub fn tzfree(tz: TimezoneT);
 
     /// Convert system time to local time using passed-in time zone.
@@ -168,6 +174,7 @@ extern "C" {
     ///
     /// This acts like [`localtime_r`] except it uses the passed in TimezoneT instead of the shared global
     /// configuration.
+    #[link_name = "tz_localtime_rz"]
     pub fn localtime_rz(tz: TimezoneT, timep: *const TimeT, tmp: *mut Tm) -> *mut Tm;
 
     /// Convert local time `Tm` to system time using passed-in time zone.
@@ -179,6 +186,7 @@ extern "C" {
     ///
     /// This acts like [`mktime`] except it uses the passed in TimezoneT instead of the shared global
     /// configuration.
+    #[link_name = "tz_mktime_z"]
     pub fn mktime_z(tz: TimezoneT, tmp: *const Tm) -> TimeT;
 
     /// Convert from leap-second to POSIX `time_t`s.
@@ -189,6 +197,7 @@ extern "C" {
     /// ```
     ///
     #[doc = include_str!("time2posix.md")]
+    #[link_name = "tz_posix2time_z"]
     pub fn posix2time_z(tz: TimezoneT, t: TimeT) -> TimeT;
 
     /// Convert from POSIX to leap-second `time_t`s.
@@ -199,6 +208,7 @@ extern "C" {
     /// ```
     ///
     #[doc = include_str!("time2posix.md")]
+    #[link_name = "tz_time2posix_z"]
     pub fn time2posix_z(tz: TimezoneT, t: TimeT) -> TimeT;
 }
 

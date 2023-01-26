@@ -19,6 +19,7 @@ fn main() {
         .arg(format!("CFLAGS={}", ["-Dgetenv=rust_getenv",    // Hack to make the tz C code use rust's getenv (so that it is locked properly)
                                    "-DTHREAD_SAFE",           // Make tz protect shared globals with a mutex
                                    "-DSTD_INSPIRED=1",        // Add posix2time_z() and time2posix_z().
+                                   "-Dtime_tz=int64_t",       // Force libtz to use a 64 bit time_t
                                    "-DHAVE_TZNAME=0",         // Don't export variables--they're inherently racey
                                    "-DUSG_COMPAT=0",          // " " "
                                    "-DALTZONE=0",             // " " "
