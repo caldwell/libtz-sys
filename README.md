@@ -12,6 +12,10 @@ Aside from that it should be a drop in replacement for glibc. It will read the
 tzdata files that the system has installed to calculate things like leap seconds
 and daylight saving time.
 
+Links: [[Documentation](https://docs.rs/libtz-sys/latest)]
+       [[Git Repository](https://github.com/caldwell/libtz-sys)]
+       [[Crates.io](https://crates.io/crates/libtz-sys)]
+
 Usage
 -----
 
