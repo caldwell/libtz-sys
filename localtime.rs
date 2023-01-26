@@ -90,7 +90,8 @@ extern "C" {
     /// The `localtime_r` function corrects for the time zone and any time zone adjustments (such as Daylight
     /// Saving Time in the United States).  The storage for the returned [`Tm`] should be passed in as the 2nd
     /// argument. If it encounters an error, it will return a `NULL` and set `errno` (see
-    /// [`std::io::Error::last_os_error`]).
+    /// [`std::io::Error::last_os_error`]). The pointer returned in [`Tm::tm_zone`] will only be valid until
+    /// the next [`tzet()`][tzset] call.
     #[link_name = "tz_localtime_r"]
     pub fn localtime_r(timep: *const TimeT, tmp: *mut Tm) -> *mut Tm;
 
@@ -185,7 +186,8 @@ extern "C" {
     /// ```
     ///
     /// This acts like [`localtime_r`] except it uses the passed in TimezoneT instead of the shared global
-    /// configuration.
+    /// configuration. The pointer returned in [`Tm::tm_zone`] will be valid until the [`TimezoneT`] is freed
+    /// with [`tzfree()`][tzfree].
     #[link_name = "tz_localtime_rz"]
     pub fn localtime_rz(tz: TimezoneT, timep: *const TimeT, tmp: *mut Tm) -> *mut Tm;
 
