@@ -28,6 +28,13 @@ fn rust_getenv_internal(name: *const c_char) -> Option<*const c_char> {
 /// Note: This is libtz's `time_t`, which currently hardcoded to i64 regardless
 /// of the system's `time_t`.
 pub type TimeT = i64; // See `-Dtime_tz` in build.rs
+
+/// A broken down time representation, logically equivalent to `struct tm` in unix.
+///
+/// Note: This is libtz's `struct tm` and doesn't necessarily match the system's
+/// in terms of member ordering.
+///
+/// Reference: <https://pubs.opengroup.org/onlinepubs/7908799/xsh/time.h.html>
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
 pub struct Tm {
