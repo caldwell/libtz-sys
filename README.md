@@ -19,7 +19,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-libtz-sys = "0.1.1"
+libtz-sys = "0.2.0"
 ```
 
 Example
