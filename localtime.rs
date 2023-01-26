@@ -104,10 +104,6 @@ extern "C" {
     ///
     /// This function is like [`mktime`] except that it treats the `tmp` as UTC (ignoring the `tm_idst` and
     /// `tm_zone` members).
-    ///
-    /// ```text
-    /// bad_rust_code();
-    /// ```
     #[link_name = "tz_timegm"]
     pub fn timegm(tmp: *const Tm) -> TimeT;
 
