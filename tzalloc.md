@@ -1,9 +1,9 @@
 If `TZ` is null, the best available approximation to local (wall clock) time, as
 specified by the `tzfile`(5)-format file `localtime` in the system time
-conversion information directory, is used.  If `TZ` is the empty string, UT is
-used, with the abbreviation "UTC" and without leap second correction; please see
-`newctime`(3) for more about UT, UTC, and leap seconds.  If `TZ` is nonnull and
-nonempty:
+conversion information directory (typically `/etc`), is used.  If `TZ` is the
+empty string, UT is used, with the abbreviation "UTC" and without leap second
+correction; please see `newctime`(3) for more about UT, UTC, and leap seconds.
+If `TZ` is nonnull and nonempty:
 
 - if the value begins with a colon, it is used as a pathname of a file from
 which to read the time conversion information;
