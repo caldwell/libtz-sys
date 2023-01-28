@@ -1,6 +1,6 @@
 [package]
 name = "libtz-sys"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 description = "An FFI interface to IANA's timezone library, libtz"
 repository = "https://github.com/caldwell/libtz-sys.git"
