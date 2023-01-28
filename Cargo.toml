@@ -2,7 +2,7 @@
 name = "libtz-sys"
 version = "0.2.1"
 edition = "2021"
-description = "An FFI interface to IANA's timezone library, libtz [WIP, don't use yet]"
+description = "An FFI interface to IANA's timezone library, libtz"
 repository = "https://github.com/caldwell/libtz-sys.git"
 license-file = "LICENSE.md"
 links = "tz"

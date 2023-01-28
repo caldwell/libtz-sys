@@ -66,6 +66,11 @@ unsafe { tzfree(tz) };
 # Ok(())
 ```
 
+Status
+------
+This is young code and designed to be a backend for
+[`libtz`](https://github.com/caldwell/libtz). It may change rapidly.
+
 License
 -------
 
