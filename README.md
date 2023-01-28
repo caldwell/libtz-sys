@@ -7,14 +7,16 @@ Rust FFI interface for IANA's [libtz](https://www.iana.org/time-zones)
 This is a low level library---You will _most likely_ prefer [libtz, a more
 idomatic Rust interface built on top of this](https://github.com/caldwell/libtz).
 
-This provides an equivalent of glibc's `localtime_r()` function (and related
+This provides an equivalent of libc's `localtime_r()` function (and related
 functions). The difference is that this library has been compiled such that the
 `getenv("TZ")` call uses Rust's `std::env::var_os()` which protects it from
-`std::env::set_var()` races which could otherwise cause segfaults.
+`std::env::set_var()` races which could otherwise cause segfaults on systems
+that don't provide multithread safe implementations of `getenv()` and
+`setenv()`.
 
-Aside from that it should be a drop in replacement for glibc. It will read the
-tzdata files that the system has installed to calculate things like leap seconds
-and daylight saving time.
+Aside from that it should be a drop in replacement for most libc localtime
+implementations. It will read the tzdata files that the system has installed to
+calculate things like leap seconds and daylight saving time.
 
 Links: [[Documentation](https://docs.rs/libtz-sys/latest)]
        [[Git Repository](https://github.com/caldwell/libtz-sys)]
